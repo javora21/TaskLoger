@@ -1,0 +1,127 @@
+﻿@model IEnumerable<TaskLoger.Core.DAL.DbModels.ProjectModel>
+@{
+    ViewBag.Title = "Task Loger";
+}
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col">
+            <div class="form-group">
+                <label>Date:</label>
+                <input id="datepicker" readonly />
+            </div>
+            <script>
+                $('#datepicker').datepicker({
+                    uiLibrary: 'bootstrap4',
+                    format: 'dd-mm-yyyy',
+                    change: function (e) {
+                        loadTable("", false);
+                    }
+
+                });
+            </script>
+        </div>
+        <div class="col">
+            <button class="btn btn-info my-4" id="clear-data">Clear Date</button>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Project:</label>
+                <select class="form-control" id="project-filter">
+                    <option value="">All Project</option>
+                    @foreach (var item in Model)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary my-4" data-toggle="modal" data-target="#formModalCenter">
+                Add Task
+            </button>
+
+            <!-- Modal -->
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table id="table-area" class="table table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Task Name</th>
+                        <th scope="col">Times</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col" style="display:none">End</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row" id="sum-time"><h3></h3></div>
+    </div>
+    <div class="modal fade" id="formModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/task/addnewtask" method="post" id="product-data-form">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="task-name" class="col-form-label">Ticket:</label>
+                            <input type="text" class="form-control" id="task-name" name="TaskName">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-project" class="col-form-label">Project:</label>
+                            <select class="form-control" id="task-project" name="ProjectId">
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="task-description" name="Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Start:</label>
+                            <input type="time" class="form-control" id="task-start" name="StartTime" />
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">End:</label>
+                            <input type="time" class="form-control" id="task-end" name="EndTime" />
+                        </div>
+                        <input type="hidden" name="TaskId" id="task-id">
+                        <div class="invalid-feedback" id="valid-data">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="delete-task" data-dismiss="modal">Delete</button>
+                        <button type="button" class="btn btn-primary" form="product-data-form" id="add-new-task">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
